@@ -1,3 +1,4 @@
+.env
 .DS_Store
 .AppleDouble
 .LSOverride
@@ -5,7 +6,7 @@ iisnode.yml
 npm-debug.log
 
 db/shortly.sqlite
-node_modules
+/node_modules
 public/dist
 
 # Icon must ends with two \r.
