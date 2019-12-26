@@ -3,6 +3,10 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     concat: {
+      public:{
+        src:[ 'public/client/*.js','public/lib/*.js' ],
+        dest:'publicConCat/script.js'
+    },
     },
 
     mochaTest: {
@@ -14,6 +18,7 @@ module.exports = function(grunt) {
       }
     },
 
+
     nodemon: {
       dev: {
         script: 'server.js'
@@ -21,12 +26,22 @@ module.exports = function(grunt) {
     },
 
     uglify: {
+      build:{
+        files:[{
+          src: 'publicConCat/script.js',
+          dest:'publicConCat/script.js'
+        }]
+      }
     },
 
     eslint: {
       target: [
         // Add list of files to lint here
       ]
+    },
+
+    add:{
+      'git add .'
     },
 
     cssmin: {
@@ -64,7 +79,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-nodemon');
 
-  grunt.registerTask('server-dev', function (target) {
+  grunt.registerTask( 'server-dev', function (target) {
     grunt.task.run([ 'nodemon', 'watch' ]);
   });
 
@@ -77,7 +92,13 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('build', [
+    'add','commit','push'
   ]);
+
+
+  grunt.registerTask('qweqwes', function () {
+    console.log('HIIIIIIIIIIIIII')
+  });
 
   grunt.registerTask('upload', function(n) {
     if (grunt.option('prod')) {
@@ -91,5 +112,6 @@ module.exports = function(grunt) {
     // add your deploy tasks here
   ]);
 
+grunt.registerTask('concat-js', ['concat :public']);
 
 };

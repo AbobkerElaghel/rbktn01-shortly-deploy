@@ -1,8 +1,28 @@
 var db = require('../config');
 var bcrypt = require('bcrypt-nodejs');
 var Promise = require('bluebird');
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/shortly');
+mongoose.Promise = Promise;
 
-var User = db.Model.extend({
+let userSchema = mongoose.Schema({
+  // TODO: your schema here!
+  id:{ //repo ID
+    type:Number,
+    required:true
+},
+
+  username:String, // the name of the repo
+  password:String, //the owner of the repo //login,
+  created_at:Date,
+  updated_at:Date
+});
+
+let User = mongoose.model('user', userSchema);
+// add this fucntions in the user instance
+
+x
+ User = db.Model.extend ( {
   tableName: 'users',
   hasTimestamps: true,
   initialize: function() {
