@@ -21,25 +21,43 @@ let userSchema = mongoose.Schema({
 let User = mongoose.model('user', userSchema);
 // add this fucntions in the user instance
 
-x
- User = db.Model.extend ( {
-  tableName: 'users',
-  hasTimestamps: true,
-  initialize: function() {
-    this.on('creating', this.hashPassword);
-  },
-  comparePassword: function(attemptedPassword, callback) {
-    bcrypt.compare(attemptedPassword, this.get('password'), function(err, isMatch) {
-      callback(isMatch);
+
+// User.comparePassword = function(attemptedPassword, callback) {
+//     bcrypt.compare(attemptedPassword, this.get('password'), function(err, isMatch) {
+//       callback(isMatch);
+//     });
+//   }
+  User.comparePassword = function(candidatePassword, savedPassword, cb) {
+    bcrypt.compare(candidatePassword, savedPassword, function(err, isMatch) {
+      if (err) {
+        return cb(err);
+      }
+      cb(null, isMatch);
     });
-  },
-  hashPassword: function() {
-    var cipher = Promise.promisify(bcrypt.hash);
-    return cipher(this.get('password'), null, null).bind(this)
-      .then(function(hash) {
-        this.set('password', hash);
-      });
-  }
+  };
+//  User = db.Model.extend ( {
+//   tableName: 'users',
+//   hasTimestamps: true,
+//   initialize: function() {
+//     this.on('creating', this.hashPassword);
+//   },
+//   ,
+//   hashPassword: function() {
+//     var cipher = Promise.promisify(bcrypt.hash);
+//     return cipher(this.get('password'), null, null).bind(this)
+//       .then(function(hash) {
+//         this.set('password', hash);
+//       });
+//   }
+// });
+userSchema.pre('save', function(next) {
+  var cipher = Promise.promisify(bcrypt.hash);
+  return cipher(this.password, null, null)
+    .bind(this)
+    .then(function(hash) {
+      this.password = hash;
+      next();
+    });
 });
 
 module.exports = User;

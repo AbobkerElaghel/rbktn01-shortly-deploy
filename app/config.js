@@ -16,12 +16,12 @@ mongoose.Promise = global.Promise;
 
 
 
-// ???????
-// var db = mongoose.connection;
-// db.on('error', console.error.bind(console, 'connection error:'));
-// db.once('open', function() {
-//   // we're connected!
-// }); ????????
+
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  // we're connected!
+});
 
 
 
@@ -42,24 +42,6 @@ mongoose.Promise = global.Promise;
 //   }
 // });
 
-let urlSchema = mongoose.Schema({
-  // TODO: your schema here!
-  id:{ //repo ID
-    type:Number,
-    required:true
-},
-  url:String, // the name of the repo
-  baseUrl:String, //the owner of the repo //login
-  code:String,   //the link to the repo
-  title:String, //description for the repo
-  visits:Number,
-  created_at:Date,
-  updated_at:Date
-});
-
-
-
-let url = mongoose.model('url', urlSchema);
 
 
 // Old schema declaration for users
@@ -78,7 +60,7 @@ let url = mongoose.model('url', urlSchema);
 
 
 
-// module.exports = db;
+module.exports = db;
 
 // OR //
 
